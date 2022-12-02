@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BlackJack.Players.Core.Abstractions\BlackJack.Players.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\BlackJack.Players.Core\BlackJack.Players.Core.csproj" />
   </ItemGroup>
 
 </Project>

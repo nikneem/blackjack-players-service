@@ -5,7 +5,7 @@ namespace BlackJack.Players.Core.Abstractions.Exceptions;
 
 public class BlackJackPlayerException : BlackJackException
 {
-    protected BlackJackPlayerException(BlackJackPlayerErrorCode errorCode, string message, Exception? ex) : base(errorCode, message, ex)
+    public BlackJackPlayerException(BlackJackPlayerErrorCode errorCode, string message, Exception? ex=null) : base(errorCode, message, ex)
     {
     }
 }

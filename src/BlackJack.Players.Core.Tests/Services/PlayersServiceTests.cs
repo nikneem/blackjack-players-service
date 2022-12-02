@@ -25,7 +25,7 @@ public class PlayersServiceTests
             DisplayName = desiredDisplayName
         });
         act.DisplayName.Should().Be(desiredDisplayName);
-        _repositoryMock.Verify(repo => repo.Create(It.IsAny<IBlackJackPlayer>()), Times.Once);
+        _repositoryMock.Verify(repo => repo.CreateAsync(It.IsAny<IBlackJackPlayer>()), Times.Once);
     }
 
     [Fact]
@@ -40,22 +40,22 @@ public class PlayersServiceTests
             DisplayName = desiredDisplayName
         });
         act.DisplayName.Should().Be(desiredDisplayName);
-        _repositoryMock.Verify(repo => repo.Update(playerId, It.IsAny<IBlackJackPlayer>()), Times.Once);
+        _repositoryMock.Verify(repo => repo.UpdateAsync(playerId, It.IsAny<IBlackJackPlayer>()), Times.Once);
     }
 
     private void WhenPlayerCreationSucceeds()
     {
-        _repositoryMock.Setup(x => x.Create(It.IsAny<IBlackJackPlayer>())).ReturnsAsync(true);
+        _repositoryMock.Setup(x => x.CreateAsync(It.IsAny<IBlackJackPlayer>())).ReturnsAsync(true);
     }
     private void WhenPlayerUpdateSucceeds()
     {
-        _repositoryMock.Setup(x => x.Update(It.IsAny<Guid>(), It.IsAny<IBlackJackPlayer>())).ReturnsAsync(true);
+        _repositoryMock.Setup(x => x.UpdateAsync(It.IsAny<Guid>(), It.IsAny<IBlackJackPlayer>())).ReturnsAsync(true);
     }
     private Guid WithPlayerInRepository()
     {
         var playerId = Guid.NewGuid();
-        var player = new BlackJackPlayer(playerId, "Any name");
-        _repositoryMock.Setup(x => x.Get(playerId)).ReturnsAsync(player);
+        var player = new BlackJackPlayer(playerId, Guid.NewGuid(), Guid.NewGuid(), "Any name", false, 1);
+        _repositoryMock.Setup(x => x.GetAsync(playerId)).ReturnsAsync(player);
         return playerId;
     }
 

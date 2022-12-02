@@ -1,4 +1,5 @@
-﻿using BlackJack.Players.Core.Abstractions.DataTransferObjects;
+﻿using BlackJack.Players.Core.Abstractions;
+using BlackJack.Players.Core.Abstractions.DataTransferObjects;
 using BlackJack.Players.Core.Abstractions.ErrorCodes;
 using BlackJack.Players.Core.Abstractions.Exceptions;
 using BlackJack.Players.Core.Abstractions.Repositories;
@@ -11,18 +12,49 @@ public class BlackJackPlayersService: IBlackJackPlayersService
 {
     private readonly IBlackJackPlayersRepository _repository;
 
+    public Task<List<PlayerDetailsDto>> ListAsync(Guid sessionId)
+    {
+        return _repository.ListAsync(sessionId);
+    }
+
     public async Task<PlayerDetailsDto> CreateAsync(PlayerCreateDto dto)
     {
         try
         {
-            var player = BlackJackPlayer.Create(dto.DisplayName);
-            if (await _repository.Create(player))
+            var userAlreadyExists = await _repository.GetExistsAsync(dto.UserId, dto.SessionId);
+            var sessionHasDealer = await _repository.GetHasDealerAsync(dto.SessionId);
+            var currentActivePlayers = await _repository.CountPlayersAsync(dto.SessionId);
+
+            if (currentActivePlayers > Constants.DefaultMaximumPlayers)
             {
-                return new PlayerDetailsDto
-                {
-                    Id = player.Id,
-                    DisplayName = player.DisplayName,
-                };
+                throw new BlackJackPlayerTooManyPlayersException(Constants.DefaultMaximumPlayers);
+            }
+
+            if (dto.IsDealer && sessionHasDealer)
+            {
+                throw new BlackJackPlayerException(
+                    BlackJackPlayerErrorCode.SessionAlreadyHasDealer,
+                    "This session already has a dealer, cannot add a new player as dealer");
+            }
+
+            if (userAlreadyExists)
+            {
+                throw new BlackJackPlayerException(
+                    BlackJackPlayerErrorCode.UserAlreadyIsPlayer,
+                    $"User {dto.UserId} is already registered as player of this table");
+            }
+
+            var player = BlackJackPlayer.Create(
+                dto.UserId,
+                dto.SessionId,
+                dto.DisplayName,
+                ++currentActivePlayers);
+
+            player.SetDealer(dto.IsDealer);
+
+            if (await _repository.CreateAsync(player))
+            {
+                return PlayerDetailsDto.FromDomainModel(player.Id, player);
             }
         }
         catch (Exception ex)
@@ -37,15 +69,11 @@ public class BlackJackPlayersService: IBlackJackPlayersService
     {
         try
         {
-            var player = await _repository.Get(id);
+            var player = await _repository.GetAsync(id);
             player.SetDisplayName(dto.DisplayName);
-            if (await _repository.Update(id, player))
+            if (await _repository.UpdateAsync(id, player))
             {
-                return new PlayerDetailsDto
-                {
-                    Id = id,
-                    DisplayName = player.DisplayName,
-                };
+                return PlayerDetailsDto.FromDomainModel(id, player);
             }
         }
         catch (Exception ex)

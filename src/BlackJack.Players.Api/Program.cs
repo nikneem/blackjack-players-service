@@ -1,8 +1,10 @@
 using BlackJack.Core.Configuration;
+using BlackJack.Players.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddBlackJackCore(builder.Configuration);
+builder.Services.AddBlackJackPlayers();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

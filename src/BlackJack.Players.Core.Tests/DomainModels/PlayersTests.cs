@@ -11,7 +11,7 @@ public class PlayersTests
     {
         var oldName = "OldName";
         var newName = "NewName";
-        var player = BlackJackPlayer.Create(oldName);
+        var player = BlackJackPlayer.Create(Guid.NewGuid(), Guid.NewGuid(), oldName, 1);
         player.DisplayName.Should().Be(oldName);
         player.SetDisplayName(newName);
         player.DisplayName.Should().Be(newName);
@@ -20,7 +20,7 @@ public class PlayersTests
     [Fact]
     public void WhenPlayerNameIsInvalid_ItMustThrow_BlackJackPlayerNameInvalidException()
     {
-        var act = () => { BlackJackPlayer.Create(string.Empty); };
+        var act = () => { BlackJackPlayer.Create(Guid.NewGuid(), Guid.NewGuid(), string.Empty, 1); };
         act.Should().Throw<BlackJackPlayerNameInvalidException>();
     }
 
@@ -28,7 +28,7 @@ public class PlayersTests
     public void WhenPlayerNameChangedToInvalid_ItMustThrow_BlackJackPlayerNameInvalidException()
     {
         var oldName = "OldName";
-        var player = BlackJackPlayer.Create(oldName);
+        var player = BlackJackPlayer.Create(Guid.NewGuid(), Guid.NewGuid(), oldName, 1);
         var act = () => { player.SetDisplayName(string.Empty); };
         act.Should().Throw<BlackJackPlayerNameInvalidException>();
     }
