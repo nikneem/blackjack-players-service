@@ -14,7 +14,7 @@ public class PlayersController : ControllerBase
     {
         try
         {
-            var details = await playersService.ListAsync(sessionId);
+                var details = await playersService.ListAsync(sessionId);
             return Ok(details);
         }
         catch (Exception ex)

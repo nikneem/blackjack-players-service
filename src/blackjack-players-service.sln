@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31410.414
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.Players.Api", "BlackJack.Players.Api\BlackJack.Players.Api.csproj", "{5E2CE525-7DCE-46EF-871A-92A62FDE868C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackJack.Players.Api", "BlackJack.Players.Api\BlackJack.Players.Api.csproj", "{5E2CE525-7DCE-46EF-871A-92A62FDE868C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.Players.Core", "BlackJack.Players.Core\BlackJack.Players.Core.csproj", "{8150BD61-2E29-4E9C-941B-FB1802438B6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackJack.Players.Core", "BlackJack.Players.Core\BlackJack.Players.Core.csproj", "{8150BD61-2E29-4E9C-941B-FB1802438B6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.Players.Core.Abstractions", "BlackJack.Players.Core.Abstractions\BlackJack.Players.Core.Abstractions.csproj", "{16032E8F-6C57-487B-A41E-BFA92A7DEF9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackJack.Players.Core.Abstractions", "BlackJack.Players.Core.Abstractions\BlackJack.Players.Core.Abstractions.csproj", "{16032E8F-6C57-487B-A41E-BFA92A7DEF9C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6540A721-7112-40C4-82F7-D32C41DD7EBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.Players.Core.Tests", "BlackJack.Players.Core.Tests\BlackJack.Players.Core.Tests.csproj", "{EC962600-1C6B-4F2F-A08E-5D2BACA16F16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackJack.Players.Core.Tests", "BlackJack.Players.Core.Tests\BlackJack.Players.Core.Tests.csproj", "{EC962600-1C6B-4F2F-A08E-5D2BACA16F16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.Players.Functions", "BlackJack.Players.Functions\BlackJack.Players.Functions.csproj", "{26586182-89E4-4E16-BE14-2E4AFD20FAEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{EC962600-1C6B-4F2F-A08E-5D2BACA16F16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC962600-1C6B-4F2F-A08E-5D2BACA16F16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC962600-1C6B-4F2F-A08E-5D2BACA16F16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26586182-89E4-4E16-BE14-2E4AFD20FAEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26586182-89E4-4E16-BE14-2E4AFD20FAEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26586182-89E4-4E16-BE14-2E4AFD20FAEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26586182-89E4-4E16-BE14-2E4AFD20FAEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
