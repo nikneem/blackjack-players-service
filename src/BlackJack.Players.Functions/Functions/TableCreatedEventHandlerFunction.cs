@@ -34,22 +34,22 @@ public class TableCreatedEventHandlerFunction
     }
 
     [Function("TableCreatedEventHandlerFunction")]
-    public async Task Run([EventGridTrigger] TableCreatedEvent input)
+    public void Run([EventGridTrigger] TableCreatedEvent input)
     {
         _logger.LogInformation(input.Data.ToString());
 
-        var entity = new PlayerTableEntity
-        {
-            PartitionKey = "player",
-            RowKey = Guid.NewGuid().ToString(),
-            Order = 0,
-            IsDealer = true,
-            DisplayName = "Dealer",
-            SessionId = input.Data.SessionId,
-            UserId = input.Data.UserId,
-            ETag = ETag.All,
-            Timestamp = DateTimeOffset.UtcNow
-        };
-        await _tableClient.AddEntityAsync(entity);
+        //var entity = new PlayerTableEntity
+        //{
+        //    PartitionKey = "player",
+        //    RowKey = Guid.NewGuid().ToString(),
+        //    Order = 0,
+        //    IsDealer = true,
+        //    DisplayName = "Dealer",
+        //    SessionId = input.Data.SessionId,
+        //    UserId = input.Data.UserId,
+        //    ETag = ETag.All,
+        //    Timestamp = DateTimeOffset.UtcNow
+        //};
+        //await _tableClient.AddEntityAsync(entity);
     }
 }
