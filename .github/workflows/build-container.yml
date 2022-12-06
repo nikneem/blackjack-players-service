@@ -95,14 +95,14 @@ jobs:
         run: dotnet publish BlackJack.Players.Functions/BlackJack.Players.Functions.csproj -c Release --no-restore -o functionsout /p:Version=${{needs.versionize.outputs.semver}}
 
       - name: Zip output
-        run: zip -qq -r function.zip *
+        run: zip -qq -r functions.zip *
         working-directory: src/functionsout
 
       - name: Upload functions artifact
         uses: actions/upload-artifact@v3
         with:
           name: player-functions
-          path: src/functionsout
+          path: src/functionsout/functions.zip
 
   publish-bicep:
     runs-on: ubuntu-latest
