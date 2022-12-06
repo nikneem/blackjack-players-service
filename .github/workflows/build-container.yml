@@ -90,12 +90,12 @@ jobs:
         run: dotnet restore
       - name: Publish functions app
         working-directory: src
-        run: dotnet publish BlackJack.Players.Functions/BlackJack.Players.Functions.csproj -c Release --no-restore -o functionsout
+        run: dotnet publish BlackJack.Players.Functions/BlackJack.Players.Functions.csproj -c Release --no-restore -o functionsout /p:Version=${{needs.versionize.outputs.semver}}
       - name: Upload functions artifact
         uses: actions/upload-artifact@v3
         with:
           name: player-functions
-          path: functionsout
+          path: src/functionsout
 
   publish-bicep:
     runs-on: ubuntu-latest
