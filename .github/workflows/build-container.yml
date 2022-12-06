@@ -6,7 +6,7 @@ on:
 
 env:
   IMAGE_NAME: blackjack-players-api
-  FUNK_IMAGE_NAME: blackjack-players-func
+  FUNC_IMAGE_NAME: blackjack-players-func
 
 jobs:
   versionize:
@@ -85,8 +85,8 @@ jobs:
       - name: Build container images
         working-directory: src
         run: |
-          docker build . --file Dockerfile.func --tag ${{ secrets.ACR_LOGIN_SERVER }}/$FUNK_IMAGE_NAME:${{needs.versionize.outputs.semver}}
-          docker build . --file Dockerfile.func--tag ${{ secrets.ACR_LOGIN_SERVER }}/$FUNK_IMAGE_NAME:latest
+          docker build . --file Dockerfile.func --tag ${{ secrets.ACR_LOGIN_SERVER }}/$FUNC_IMAGE_NAME:${{needs.versionize.outputs.semver}}
+          docker build . --file Dockerfile.func --tag ${{ secrets.ACR_LOGIN_SERVER }}/$FUNC_IMAGE_NAME:latest
       - name: Login to ACR
         uses: azure/docker-login@v1
         with:
@@ -96,8 +96,8 @@ jobs:
       - name: Push container images
         working-directory: src
         run: |
-          docker push ${{ secrets.ACR_LOGIN_SERVER }}/$FUNK_IMAGE_NAME:${{needs.versionize.outputs.semver}}
-          docker push ${{ secrets.ACR_LOGIN_SERVER }}/$FUNK_IMAGE_NAME:latest
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/$FUNC_IMAGE_NAME:${{needs.versionize.outputs.semver}}
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/$FUNC_IMAGE_NAME:latest
 
   publish-bicep:
     runs-on: ubuntu-latest
