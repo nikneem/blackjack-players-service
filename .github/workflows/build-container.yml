@@ -130,16 +130,16 @@ jobs:
       - uses: azure/login@v1
         with:
           creds: ${{secrets.AZURE_PROD}}
-      #     enable-AzPSSession: true
-      # - name: Get publish Profile
-      #   id: fncapp
-      #   shell: pwsh
-      #   run: |
-      #     $profile = Get-AzWebAppPublishingProfile `
-      #         -ResourceGroupName blckjck-plyr-prod-neu `
-      #         -Name blckjck-plyr-prod-neu-func
-      #     $profile = $profile.Replace("`r", "").Replace("`n", "")
-      #     Write-Output "::set-output name=profile::$profile"
+          enable-AzPSSession: true
+      - name: Get publish Profile
+        id: fncapp
+        shell: pwsh
+        run: |
+          $profile = Get-AzWebAppPublishingProfile `
+              -ResourceGroupName blckjck-plyr-prod-neu `
+              -Name blckjck-plyr-prod-neu-func
+          $profile = $profile.Replace("`r", "").Replace("`n", "")
+          Write-Output "::set-output name=profile::$profile"
 
       # - name: Deploy FunctionApp
       #   uses: Azure/functions-action@v1
