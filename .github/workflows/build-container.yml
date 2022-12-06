@@ -95,7 +95,7 @@ jobs:
         run: dotnet publish BlackJack.Players.Functions/BlackJack.Players.Functions.csproj -c Release --no-restore -o functionsout /p:Version=${{needs.versionize.outputs.semver}}
 
       - name: Zip output
-        run: zip -qq -r function.zip
+        run: zip -qq -r function.zip *
         working-directory: src/functionsout
 
       - name: Upload functions artifact
