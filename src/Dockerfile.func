@@ -3,11 +3,10 @@ WORKDIR /home/site/wwwroot
 EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-WORKDIR /src
 COPY ["BlackJack.Players.Functions/BlackJack.Players.Functions.csproj", "BlackJack.Players.Functions/"]
 RUN dotnet restore "BlackJack.Players.Functions/BlackJack.Players.Functions.csproj"
 COPY . .
-WORKDIR "/src/BlackJack.Players.Functions"
+WORKDIR "/BlackJack.Players.Functions"
 RUN dotnet build "BlackJack.Players.Functions.csproj" -c Release -o /app/build
 
 FROM build AS publish
