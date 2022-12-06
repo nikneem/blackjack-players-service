@@ -127,11 +127,11 @@ jobs:
           name: player-functions
       - name: Display structure of downloaded files
         run: ls -R
-      – name: Login via Az Module
-        uses: azure/login@v1
-        with:
-          creds: ${{secrets.AZURE_PROD}}
-          enable-AzPSSession: true
+      # – name: Login via Az Module
+      #   uses: azure/login@v1
+      #   with:
+      #     creds: ${{secrets.AZURE_PROD}}
+      #     enable-AzPSSession: true
       # - name: Get publish Profile
       #   id: fncapp
       #   shell: pwsh
