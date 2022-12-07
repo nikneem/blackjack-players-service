@@ -119,6 +119,10 @@ resource azureContainerApp 'Microsoft.App/containerApps@2022-03-01' = {
               name: 'AllowedCorsOrigins'
               value: 'http://localhost:4200;https://blackjack.hexmaster.nl'
             }
+            {
+              name: 'UserAssignedClientId'
+              value: identity.properties.clientId
+            }
           ]
 
         }

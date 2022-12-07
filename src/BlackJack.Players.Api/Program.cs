@@ -2,25 +2,27 @@ using Azure.Identity;
 using BlackJack.Core.Configuration;
 using BlackJack.Core.Exceptions;
 using BlackJack.Core.ExtensionMethods;
-using BlackJack.Core.HealthChecks;
 using BlackJack.Events.Configuration;
 using BlackJack.Players.Core;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 const string defaultCorsPolicyName = "default_cors";
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-var azureCredential = new ChainedTokenCredential(
-    new ManagedIdentityCredential(),
-    new EnvironmentCredential(),
-    new AzureCliCredential());
 try
 {
+    var azureAppConfigurationEndpoint = builder.Configuration.GetRequiredValue("Azure:AzureAppConfiguration");
+    var userAssignedIdentity = builder.Configuration.GetRequiredValue("UserAssignedClientId");
+        
+    var azureCredential = new ChainedTokenCredential(
+            new ManagedIdentityCredential(),
+            new ManagedIdentityCredential(clientId: userAssignedIdentity),
+            new EnvironmentCredential(),
+            new AzureCliCredential());
+    
     builder.Configuration.AddAzureAppConfiguration(options =>
     {
-        options.Connect(new Uri(builder.Configuration.GetRequiredValue("Azure:AzureAppConfiguration")), azureCredential)
+        options.Connect(new Uri(azureAppConfigurationEndpoint), azureCredential)
             .ConfigureKeyVault(kv => kv.SetCredential(azureCredential))
             .UseFeatureFlags();
     });
