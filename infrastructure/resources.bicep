@@ -122,15 +122,10 @@ resource azureContainerApp 'Microsoft.App/containerApps@2022-03-01' = {
   }
 }
 
-resource storageAccountDataContributorRole 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' existing = {
-  scope: resourceGroup()
-  name: '0a9a7e1f-b9d0-4cc4-a60d-0319b160aaa3'
-}
-module storageAccountDataReaderRoleAssignment 'roleAssignment.bicep' = {
-  name: 'storageAccountDataReaderRoleAssignmentModule'
-  scope: resourceGroup()
+module allRoleAssignments 'all-role-assignments.bicep' = {
+  name: 'allRoleAssignmentsModule'
   params: {
-    principalId: azureContainerApp.identity.principalId
-    roleDefinitionId: storageAccountDataContributorRole.id
+    containerAppPrincipalId: azureContainerApp.identity.principalId
+    integrationResourceGroupName: integrationResourceGroup
   }
 }
