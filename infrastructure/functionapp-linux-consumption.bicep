@@ -1,25 +1,10 @@
 param defaultResourceName string
 param location string = resourceGroup().location
 
-param storageAccountConnectionString string
-
 param corsOrigins array
 param corsSupportCredentials bool = false
 
-param appSettings array = [
-  {
-    name: 'AzureWebJobsStorage'
-    value: storageAccountConnectionString
-  }
-  {
-    name: 'FUNCTIONS_EXTENSION_VERSION'
-    value: '~4'
-  }
-  {
-    name: 'FUNCTIONS_WORKER_RUNTIME'
-    value: 'dotnet-isolated'
-  }
-]
+param appSettings array
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: '${defaultResourceName}-plan'

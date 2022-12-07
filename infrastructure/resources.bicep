@@ -1,5 +1,4 @@
 param defaultResourceName string
-param environmentName string
 param location string = resourceGroup().location
 
 param integrationResourceGroupName string
@@ -23,7 +22,21 @@ module storageAccountSecret 'keyvault-secret.bicep' = {
     secretValue: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
   }
 }
-var x = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
+
+var config = [
+  {
+    name: 'AzureWebJobsStorage'
+    value: storageAccountSecret.outputs.keyVaultReference
+  }
+  {
+    name: 'FUNCTIONS_EXTENSION_VERSION'
+    value: '~4'
+  }
+  {
+    name: 'FUNCTIONS_WORKER_RUNTIME'
+    value: 'dotnet-isolated'
+  }
+]
 
 module functionApp 'functionapp-linux-consumption.bicep' = {
   name: 'functionAppModule'
@@ -32,8 +45,8 @@ module functionApp 'functionapp-linux-consumption.bicep' = {
       'http://localhost:4200'
     ]
     defaultResourceName: defaultResourceName
-    storageAccountConnectionString: x
     location: location
+    appSettings: config
   }
 }
 

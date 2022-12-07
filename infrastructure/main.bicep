@@ -26,7 +26,6 @@ module resourcesModule 'resources.bicep' = {
   scope: targetResourceGroup
   params: {
     defaultResourceName: defaultResourceName
-    environmentName: environmentName
     integrationResourceGroupName: integrationResourceGroup
     location: location
   }
