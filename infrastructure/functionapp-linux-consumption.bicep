@@ -39,6 +39,7 @@ resource appConfig 'Microsoft.Web/sites/config@2022-03-01' = {
     ftpsState: 'Disabled'
     minTlsVersion: '1.2'
     http20Enabled: true
+    netFrameworkVersion: 'v7.0'
     cors: {
       allowedOrigins: corsOrigins
       supportCredentials: corsSupportCredentials

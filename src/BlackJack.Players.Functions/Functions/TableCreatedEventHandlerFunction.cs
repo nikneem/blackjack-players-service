@@ -33,7 +33,7 @@ public class TableCreatedEventHandlerFunction
 
     }
 
-    [Function("TableCreatedEventHandlerFunction")]
+    [Function(nameof(TableCreatedEventHandlerFunction))]
     public void Run([EventGridTrigger] TableCreatedEvent input)
     {
         _logger.LogInformation(input.Data.ToString());
