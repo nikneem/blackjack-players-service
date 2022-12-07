@@ -18,8 +18,9 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2022-02-01-pr
   scope: resourceGroup('Containers')
 }
 
-resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' existing = {
+resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' = {
   name: '${defaultResourceName}-id'
+  location: location
 }
 
 module allRoleAssignments 'all-role-assignments.bicep' = {
