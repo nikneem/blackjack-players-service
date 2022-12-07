@@ -20,3 +20,14 @@ resource targetResourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: resourceGroupName
   location: location
 }
+
+module resources 'resources.bicep' = {
+  name: 'resourcesModule'
+  scope: targetResourceGroup
+  params: {
+    defaultResourceName: defaultResourceName
+    environmentName: environmentName
+    integrationResourceGroupName: integrationResourceGroup
+    location: location
+  }
+}
