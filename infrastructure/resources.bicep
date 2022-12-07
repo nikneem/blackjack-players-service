@@ -13,6 +13,10 @@ resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2022-0
   name: '${integrationResourceGroup}-cfg'
   scope: resourceGroup(integrationResourceGroup)
 }
+resource containerRegistry 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' existing = {
+  name: 'ekereg'
+  scope: resourceGroup('Containers')
+}
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: uniqueString(defaultResourceName)
@@ -55,6 +59,19 @@ resource azureContainerApp 'Microsoft.App/containerApps@2022-03-01' = {
           }
         ]
       }
+      secrets: [
+        {
+          name: 'container-registry-password'
+          value: containerRegistry.listCredentials().passwords[0].value
+        }
+      ]
+      registries: [
+        {
+          server: containerRegistry.name
+          username: containerRegistry.properties.loginServer
+          passwordSecretRef: 'container-registry-password'
+        }
+      ]
       dapr: {
         enabled: true
         appPort: 80
