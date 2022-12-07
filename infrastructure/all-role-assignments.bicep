@@ -1,6 +1,19 @@
 param containerAppPrincipalId string
 param integrationResourceGroupName string
 
+resource acrPullRole 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' existing = {
+  scope: resourceGroup()
+  name: '7f951dda-4ed3-4680-a7ca-43fe172d538d'
+}
+module acrPullRoleAssignment 'roleAssignment.bicep' = {
+  name: 'acrPullRoleAssignmentModule'
+  scope: resourceGroup('Containers')
+  params: {
+    principalId: containerAppPrincipalId
+    roleDefinitionId: acrPullRole.id
+  }
+}
+
 resource storageAccountDataContributorRole 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' existing = {
   scope: resourceGroup()
   name: '0a9a7e1f-b9d0-4cc4-a60d-0319b160aaa3'

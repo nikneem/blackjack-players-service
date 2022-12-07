@@ -13,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6540A721
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackJack.Players.Core.Tests", "BlackJack.Players.Core.Tests\BlackJack.Players.Core.Tests.csproj", "{EC962600-1C6B-4F2F-A08E-5D2BACA16F16}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackJack.Players.Functions", "BlackJack.Players.Functions\BlackJack.Players.Functions.csproj", "{26586182-89E4-4E16-BE14-2E4AFD20FAEA}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,10 +35,6 @@ Global
 		{EC962600-1C6B-4F2F-A08E-5D2BACA16F16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC962600-1C6B-4F2F-A08E-5D2BACA16F16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC962600-1C6B-4F2F-A08E-5D2BACA16F16}.Release|Any CPU.Build.0 = Release|Any CPU
-		{26586182-89E4-4E16-BE14-2E4AFD20FAEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{26586182-89E4-4E16-BE14-2E4AFD20FAEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{26586182-89E4-4E16-BE14-2E4AFD20FAEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{26586182-89E4-4E16-BE14-2E4AFD20FAEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
