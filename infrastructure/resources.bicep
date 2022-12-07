@@ -3,6 +3,11 @@ param location string = resourceGroup().location
 
 param integrationResourceGroupName string
 
+resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2022-05-01' existing = {
+  name: '${integrationResourceGroupName}-cfg'
+  scope: resourceGroup(integrationResourceGroupName)
+}
+
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: uniqueString(defaultResourceName)
   location: location
@@ -35,6 +40,10 @@ var config = [
   {
     name: 'FUNCTIONS_WORKER_RUNTIME'
     value: 'dotnet-isolated'
+  }
+  {
+    name: 'Azure:AppConfiguration'
+    value: appConfiguration.properties.endpoint
   }
 ]
 

@@ -1,7 +1,12 @@
+using BlackJack.Players.Functions;
 using Microsoft.Extensions.Hosting;
 
-var host = new HostBuilder()
-    .ConfigureFunctionsWorkerDefaults()
-    .Build();
+await new BlackJackPlayersFunctionsStartup().RunAsync();
 
-host.Run();
+
+
+//var host = new HostBuilder()
+//    .ConfigureFunctionsWorkerDefaults()
+//    .Build();
+
+//host.Run();
