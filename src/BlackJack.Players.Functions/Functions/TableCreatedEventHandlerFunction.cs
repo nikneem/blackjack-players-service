@@ -1,6 +1,7 @@
 using Azure;
 using Azure.Data.Tables;
 using Azure.Identity;
+using Azure.Messaging;
 using BlackJack.Events.Events;
 using BlackJack.Players.Core.Repositories;
 using Microsoft.Azure.Functions.Worker;
@@ -34,22 +35,8 @@ public class TableCreatedEventHandlerFunction
     }
 
     [Function(nameof(TableCreatedEventHandlerFunction))]
-    public void Run([EventGridTrigger] TableCreatedEvent input)
+    public void Run([EventGridTrigger] CloudEvent e)
     {
-        _logger.LogInformation(input.Data.ToString());
-
-        //var entity = new PlayerTableEntity
-        //{
-        //    PartitionKey = "player",
-        //    RowKey = Guid.NewGuid().ToString(),
-        //    Order = 0,
-        //    IsDealer = true,
-        //    DisplayName = "Dealer",
-        //    SessionId = input.Data.SessionId,
-        //    UserId = input.Data.UserId,
-        //    ETag = ETag.All,
-        //    Timestamp = DateTimeOffset.UtcNow
-        //};
-        //await _tableClient.AddEntityAsync(entity);
+        _logger.LogInformation("Event received {type} {subject}", e.Type, e.Subject);
     }
 }
