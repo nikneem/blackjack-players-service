@@ -118,9 +118,24 @@ jobs:
           name: bicep-templates
           path: infrastructure/*.json
 
+  deploy-infrastructure-prod:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: bicep-templates
+      - uses: azure/login@v1
+        name: Azure Login
+        with:
+          creds: ${{secrets.AZURE_PROD}}
+      - name: Compile infrastructure
+        uses: Azure/cli@v1
+        with:
+          inlineScript: az deployment sub create --location northeurope --template-file main.json --parameters main.prod.json
+
   deploy-function-app:
     runs-on: windows-latest
-    needs: build-funcs
+    needs: [build-funcs, deploy-infrastructure-prod]
     steps:
       - uses: actions/download-artifact@v3
         with:
