@@ -119,7 +119,7 @@ jobs:
           path: infrastructure/*.json
 
   deploy-function-app:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build-funcs
     steps:
       - uses: actions/download-artifact@v3
@@ -127,6 +127,7 @@ jobs:
           name: player-functions
 
       - uses: azure/login@v1
+        name: Azure Login
         with:
           creds: ${{secrets.AZURE_PROD}}
 
@@ -135,8 +136,8 @@ jobs:
       #   run: |
       #     echo "FUNCTION_APP_PUB_PROFILE=$(az functionapp deployment list-publishing-profiles --resource-group blckjck-plyr-prod-neu --name blckjck-plyr-prod-neu-func --xml)" >> $GITHUB_ENV
 
-      - name: Compile infrastructure
-        uses: Azure/cli@v1
+      - uses: Azure/cli@v1
+        name: Deploy Function App
         with:
           inlineScript: az functionapp deploy -n blckjck-plyr-prod-neu-func -g blckjck-plyr-prod-neu --src-path functions.zip --type zip
 
