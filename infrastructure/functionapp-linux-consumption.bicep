@@ -3,8 +3,6 @@ param location string = resourceGroup().location
 
 param storageAccountConnectionString string
 
-param linuxFxVersion string = 'DOTNET-ISOLATED|7.0'
-
 param corsOrigins array
 param corsSupportCredentials bool = false
 
@@ -46,9 +44,6 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
     enabled: true
     serverFarmId: appServicePlan.id
     httpsOnly: true
-    siteConfig: {
-      linuxFxVersion: linuxFxVersion
-    }
   }
 }
 
@@ -56,7 +51,6 @@ resource appConfig 'Microsoft.Web/sites/config@2022-03-01' = {
   name: 'web'
   parent: functionApp
   properties: {
-    linuxFxVersion: linuxFxVersion
     ftpsState: 'Disabled'
     minTlsVersion: '1.2'
     http20Enabled: true
