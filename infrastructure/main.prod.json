@@ -13,6 +13,9 @@
     },
     "integrationResourceGroup": {
       "value": "blckjck-int-prod-neu"
+    },
+    "storageTables": {
+      "value": ["players"]
     }
   }
 }

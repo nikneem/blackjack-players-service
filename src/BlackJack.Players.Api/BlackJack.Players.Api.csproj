@@ -9,7 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Messaging.EventGrid" Version="4.12.0" />
     <PackageReference Include="BlackJack.Core" Version="1.0.3" />
+    <PackageReference Include="BlackJack.Events" Version="0.1.9" />
+    <PackageReference Include="BlackJack.Events.Abstractions" Version="0.1.9" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.0" />
     <PackageReference Include="Microsoft.Azure.AppConfiguration.AspNetCore" Version="5.2.0" />

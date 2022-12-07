@@ -3,6 +3,7 @@ using BlackJack.Core.Configuration;
 using BlackJack.Core.Exceptions;
 using BlackJack.Core.ExtensionMethods;
 using BlackJack.Core.HealthChecks;
+using BlackJack.Events.Configuration;
 using BlackJack.Players.Core;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
@@ -29,8 +30,10 @@ catch (Exception ex)
     throw new Exception("Configuration failed", ex);
 }
 
-builder.Services.AddBlackJackCore(builder.Configuration);
-builder.Services.AddBlackJackPlayers();
+builder.Services
+    .AddBlackJackCore(builder.Configuration)
+    .AddBlackJackEvents()
+    .AddBlackJackPlayers();
 
 
 var allowedCorsOrigins = builder.Configuration.GetRequiredValue("AllowedCorsOrigins");
@@ -65,13 +68,7 @@ app.UseCors(defaultCorsPolicyName);
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
-app.UseEndpoints(ep =>
-{
-    ep.MapHealthChecks("/health", new HealthCheckOptions
-    {
-        ResponseWriter = HealthCheckExtensions.WriteResponse
-    });
-    ep.MapControllers();
-});
+app.MapHealthChecks("/health");
+app.MapControllers();
 
 app.Run();

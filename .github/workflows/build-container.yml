@@ -120,7 +120,7 @@ jobs:
 
   deploy-infrastructure-prod:
     runs-on: ubuntu-latest
-    needs: [publish-bicep, compile-api]
+    needs: [versionize, publish-bicep, compile-api]
     outputs:
       resourceGroupName: ${{ steps.armdeployprod.outputs.resourceGroupName }}
       functionAppName: ${{ steps.armdeployprod.outputs.functionAppName }}
@@ -139,36 +139,5 @@ jobs:
           scope: subscription
           region: northeurope
           template: main.json
-          parameters: main.prod.json
+          parameters: main.prod.json containerVersion=${{needs.versionize.outputs.semver}}
           deploymentName: BlackJackProd
-
-  deploy-function-app:
-    runs-on: ubuntu-latest
-    needs: [build-funcs, deploy-infrastructure-prod]
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: player-functions
-
-      - uses: azure/login@v1
-        name: Azure Login
-        with:
-          creds: ${{secrets.AZURE_PROD}}
-
-      # - name: Download Azure Function app publishing profile
-      #   id: az_funcapp_publishing_profile
-      #   run: |
-      #     echo "FUNCTION_APP_PUB_PROFILE=$(az functionapp deployment list-publishing-profiles --resource-group blckjck-plyr-prod-neu --name blckjck-plyr-prod-neu-func --xml)" >> $GITHUB_ENV
-
-      - uses: Azure/cli@v1
-        name: Deploy Function App
-        with:
-          inlineScript: az functionapp deploy -n ${{needs.deploy-infrastructure-prod.outputs.functionAppName}} -g ${{needs.deploy-infrastructure-prod.outputs.resourceGroupName}} --src-path functions.zip --type zip
-
-      # - name: Deploy Azure Functions app
-      #   uses: Azure/functions-action@v1
-      #   with:
-      #     app-name: blckjck-plyr-prod-neu-func
-      #     package: "functions.zip"
-      #     publish-profile: ${{ env.FUNCTION_APP_PUB_PROFILE }}
-      #     respect-funcignore: true

@@ -1,35 +1,31 @@
 targetScope = 'subscription'
 
 param systemName string
-@allowed([
-  'prod'
-  'acc'
-  'test'
-  'dev'
-])
 param environmentName string
-param location string = deployment().location
 param locationAbbreviation string
-
+param location string = deployment().location
 param integrationResourceGroup string
+param containerVersion string
 
-var resourceGroupName = '${systemName}-${environmentName}-${locationAbbreviation}'
-var defaultResourceName = resourceGroupName
+param storageTables array
+
+var targetResourceGroupName = '${systemName}-${environmentName}-${locationAbbreviation}'
+var defaultResourceName = targetResourceGroupName
 
 resource targetResourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
-  name: resourceGroupName
+  name: targetResourceGroupName
   location: location
 }
 
-module resourcesModule 'resources.bicep' = {
-  name: 'resourcesModule'
+module serviceResources 'resources.bicep' = {
+  name: 'serviceResourcesModule'
   scope: targetResourceGroup
   params: {
     defaultResourceName: defaultResourceName
-    integrationResourceGroupName: integrationResourceGroup
+    environmentName: environmentName
+    integrationResourceGroup: integrationResourceGroup
     location: location
+    storageTables: storageTables
+    containerVersion: containerVersion
   }
 }
-
-output resourceGroupName string = targetResourceGroup.name
-output functionAppName string = resourcesModule.outputs.functionAppName

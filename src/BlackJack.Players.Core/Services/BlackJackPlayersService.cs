@@ -65,6 +65,13 @@ public class BlackJackPlayersService: IBlackJackPlayersService
         throw new BlackJackPlayerOperationException(BlackJackPlayerErrorCode.CreationFailure);
     }
 
+    public Task<bool> CreateDealerAsync(Guid userId, Guid sessionId)
+    {
+        var player = BlackJackPlayer.Create(userId, sessionId, "Dealer", 0);
+        player.SetDealer(true);
+        return _repository.CreateAsync(player);
+    }
+
     public async Task<PlayerDetailsDto> UpdateAsync(Guid id, PlayerDetailsDto dto)
     {
         try
