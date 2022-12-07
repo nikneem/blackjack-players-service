@@ -18,19 +18,6 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2022-02-01-pr
   scope: resourceGroup('Containers')
 }
 
-resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' = {
-  name: '${defaultResourceName}-id'
-  location: location
-}
-
-module allRoleAssignments 'all-role-assignments.bicep' = {
-  name: 'allRoleAssignmentsModule'
-  params: {
-    containerAppPrincipalId: identity.properties.principalId
-    integrationResourceGroupName: integrationResourceGroup
-  }
-}
-
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: uniqueString(defaultResourceName)
   location: location
@@ -50,16 +37,10 @@ resource storageAccountTable 'Microsoft.Storage/storageAccounts/tableServices/ta
 }]
 
 resource azureContainerApp 'Microsoft.App/containerApps@2022-03-01' = {
-  dependsOn: [
-    allRoleAssignments
-  ]
   name: '${defaultResourceName}-aca'
   location: location
   identity: {
-    type: 'UserAssigned'
-    userAssignedIdentities: {
-      '${identity.id}': {}
-    }
+    type: 'SystemAssigned'
   }
   properties: {
     managedEnvironmentId: containerAppEnvironments.id
@@ -119,10 +100,6 @@ resource azureContainerApp 'Microsoft.App/containerApps@2022-03-01' = {
               name: 'AllowedCorsOrigins'
               value: 'http://localhost:4200;https://blackjack.hexmaster.nl'
             }
-            {
-              name: 'UserAssignedClientId'
-              value: identity.properties.clientId
-            }
           ]
 
         }
@@ -142,5 +119,13 @@ resource azureContainerApp 'Microsoft.App/containerApps@2022-03-01' = {
         ]
       }
     }
+  }
+}
+
+module allRoleAssignments 'all-role-assignments.bicep' = {
+  name: 'allRoleAssignmentsModule'
+  params: {
+    containerAppPrincipalId: azureContainerApp.identity.principalId
+    integrationResourceGroupName: integrationResourceGroup
   }
 }

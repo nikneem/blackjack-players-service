@@ -9,20 +9,16 @@ const string defaultCorsPolicyName = "default_cors";
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+var azureCredential = new ChainedTokenCredential(
+    new ManagedIdentityCredential(),
+    new EnvironmentCredential(),
+    new AzureCliCredential());
 try
 {
-    var azureAppConfigurationEndpoint = builder.Configuration.GetRequiredValue("Azure:AzureAppConfiguration");
-    var userAssignedIdentity = builder.Configuration.GetRequiredValue("UserAssignedClientId");
-        
-    var azureCredential = new ChainedTokenCredential(
-            new ManagedIdentityCredential(),
-            new ManagedIdentityCredential(clientId: userAssignedIdentity),
-            new EnvironmentCredential(),
-            new AzureCliCredential());
-    
     builder.Configuration.AddAzureAppConfiguration(options =>
     {
-        options.Connect(new Uri(azureAppConfigurationEndpoint), azureCredential)
+        options.Connect(new Uri(builder.Configuration.GetRequiredValue("Azure:AzureAppConfiguration")), azureCredential)
             .ConfigureKeyVault(kv => kv.SetCredential(azureCredential))
             .UseFeatureFlags();
     });
