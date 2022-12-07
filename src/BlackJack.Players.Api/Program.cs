@@ -2,8 +2,10 @@ using Azure.Identity;
 using BlackJack.Core.Configuration;
 using BlackJack.Core.Exceptions;
 using BlackJack.Core.ExtensionMethods;
+using BlackJack.Core.HealthChecks;
 using BlackJack.Events.Configuration;
 using BlackJack.Players.Core;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 const string defaultCorsPolicyName = "default_cors";
 
@@ -66,7 +68,10 @@ app.UseCors(defaultCorsPolicyName);
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
-app.MapHealthChecks("/health");
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = HealthCheckExtensions.WriteResponse
+});
 app.MapControllers();
 
 app.Run();
