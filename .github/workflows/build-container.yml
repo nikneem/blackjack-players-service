@@ -55,7 +55,7 @@ jobs:
           output: both
           thresholds: "20 80"
 
-  build:
+  build-container:
     runs-on: ubuntu-latest
     needs: versionize
     steps:
@@ -120,7 +120,7 @@ jobs:
 
   deploy-infrastructure-prod:
     runs-on: ubuntu-latest
-    needs: [versionize, publish-bicep, compile-api]
+    needs: [versionize, publish-bicep, compile-api, build-container]
     outputs:
       resourceGroupName: ${{ steps.armdeployprod.outputs.resourceGroupName }}
       functionAppName: ${{ steps.armdeployprod.outputs.functionAppName }}
