@@ -44,3 +44,5 @@ module roleAssignments 'config-and-secrets-role-assignments.bicep' = {
     integrationResourceGroupName: integrationResourceGroupName
   }
 }
+
+output functionAppName string = functionApp.outputs.appResourceName

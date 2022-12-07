@@ -21,7 +21,7 @@ resource targetResourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   location: location
 }
 
-module resources 'resources.bicep' = {
+module resourcesModule 'resources.bicep' = {
   name: 'resourcesModule'
   scope: targetResourceGroup
   params: {
@@ -31,3 +31,6 @@ module resources 'resources.bicep' = {
     location: location
   }
 }
+
+output resourceGroupName string = targetResourceGroup.name
+output functionAppName string = resourcesModule.outputs.functionAppName

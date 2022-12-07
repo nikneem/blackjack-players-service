@@ -121,6 +121,9 @@ jobs:
   deploy-infrastructure-prod:
     runs-on: ubuntu-latest
     needs: [publish-bicep, compile-api]
+    outputs:
+      resourceGroupName: ${{ steps.armdeployprod.outputs.resourceGroupName }}
+      functionAppName: ${{ steps.armdeployprod.outputs.functionAppName }}
     steps:
       - uses: actions/download-artifact@v3
         with:
@@ -129,10 +132,15 @@ jobs:
         name: Azure Login
         with:
           creds: ${{secrets.AZURE_PROD}}
-      - name: Compile infrastructure
-        uses: Azure/cli@v1
+      - uses: azure/arm-deploy@v1
+        id: armdeployprod
+        name: Deploy infrastructure
         with:
-          inlineScript: az deployment sub create --location northeurope --template-file main.json --parameters main.prod.json
+          scope: subscription
+          region: northeurope
+          template: main.json
+          parameters: main.prod.json
+          deploymentName: BlackJackProd
 
   deploy-function-app:
     runs-on: windows-latest
@@ -155,7 +163,7 @@ jobs:
       - uses: Azure/cli@v1
         name: Deploy Function App
         with:
-          inlineScript: az functionapp deploy -n blckjck-plyr-prod-neu-func -g blckjck-plyr-prod-neu --src-path functions.zip --type zip
+          inlineScript: az functionapp deploy -n ${{needs.deploy-infrastructure-prod.outputs.functionAppName}} -g ${{needs.deploy-infrastructure-prod.outputs.resourceGroupName}} --src-path functions.zip --type zip
 
       # - name: Deploy Azure Functions app
       #   uses: Azure/functions-action@v1
