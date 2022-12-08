@@ -1,5 +1,4 @@
-﻿using Azure.Messaging;
-using Azure.Messaging.EventGrid;
+﻿using Azure.Messaging.EventGrid;
 using Azure.Messaging.EventGrid.SystemEvents;
 using BlackJack.Events;
 using BlackJack.Events.EventData;
@@ -16,14 +15,14 @@ namespace BlackJack.Players.Api.Controllers
 
         [HttpPost("session_created_webhook")]
         public async Task<IActionResult> SessionCreatedWebhook(
-            [FromBody] CloudEvent[] ev,
+            [FromBody] EventGridEvent[] ev,
             [FromServices] IBlackJackPlayersService blackJackPlayersService,
             [FromServices] ILogger<WebHooksController> logger)
         {
             foreach (var eventGridEvent in ev)
             {
                 logger.LogInformation("Received webhook event {event}", JsonConvert.SerializeObject(eventGridEvent));
-                if (eventGridEvent.Type == SystemEventNames.EventGridSubscriptionValidation &&
+                if (eventGridEvent.EventType == SystemEventNames.EventGridSubscriptionValidation &&
                     eventGridEvent.Data != null)
                 {
                     logger.LogInformation("Receiving subscription validation data");
@@ -36,7 +35,7 @@ namespace BlackJack.Players.Api.Controllers
                     return Ok(response);
                 }
 
-                if (eventGridEvent.Type == BlackJackEventNames.SessionCreated &&
+                if (eventGridEvent.EventType == BlackJackEventNames.SessionCreated &&
                     eventGridEvent.Data != null)
                 {
                     var eventData = eventGridEvent.Data.ToObjectFromJson<TableCreatedEventData>();
