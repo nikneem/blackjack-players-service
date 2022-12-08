@@ -21,6 +21,7 @@ namespace BlackJack.Players.Api.Controllers
         {
             foreach (var eventGridEvent in ev)
             {
+                logger.LogInformation("Received webhook event {event}", JsonConvert.SerializeObject(eventGridEvent));
                 if (eventGridEvent.EventType == SystemEventNames.EventGridSubscriptionValidation &&
                     eventGridEvent.Data != null)
                 {
@@ -38,7 +39,6 @@ namespace BlackJack.Players.Api.Controllers
                     eventGridEvent.Data != null)
                 {
                     var eventData = eventGridEvent.Data.ToObjectFromJson<TableCreatedEventData>();
-                    logger.LogInformation("Received session created event {event}", JsonConvert.SerializeObject(eventData));
                     var dealerCreated = await blackJackPlayersService.CreateDealerAsync(eventData.UserId, eventData.SessionId);
                     logger.LogInformation("Session dealer created -> {success}", dealerCreated);
                     if (!dealerCreated)
