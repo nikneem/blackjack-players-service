@@ -4,6 +4,7 @@ using BlackJack.Events;
 using BlackJack.Events.EventData;
 using BlackJack.Players.Core.Abstractions.Services;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace BlackJack.Players.Api.Controllers
 {
@@ -36,8 +37,8 @@ namespace BlackJack.Players.Api.Controllers
                 if (eventGridEvent.EventType == BlackJackEventNames.SessionCreated &&
                     eventGridEvent.Data != null)
                 {
-                    logger.LogInformation("Received session created event {event}", eventGridEvent);
                     var eventData = eventGridEvent.Data.ToObjectFromJson<TableCreatedEventData>();
+                    logger.LogInformation("Received session created event {event}", JsonConvert.SerializeObject(eventData));
                     var dealerCreated = await blackJackPlayersService.CreateDealerAsync(eventData.UserId, eventData.SessionId);
                     logger.LogInformation("Session dealer created -> {success}", dealerCreated);
                     if (!dealerCreated)
