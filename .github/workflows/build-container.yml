@@ -94,9 +94,6 @@ jobs:
   deploy-infrastructure-prod:
     runs-on: ubuntu-latest
     needs: [versionize, publish-bicep, build-container]
-    outputs:
-      resourceGroupName: ${{ steps.armdeployprod.outputs.resourceGroupName }}
-      functionAppName: ${{ steps.armdeployprod.outputs.functionAppName }}
     steps:
       - uses: actions/download-artifact@v3
         with:
