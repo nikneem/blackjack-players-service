@@ -65,11 +65,19 @@ public class BlackJackPlayersService: IBlackJackPlayersService
         throw new BlackJackPlayerOperationException(BlackJackPlayerErrorCode.CreationFailure);
     }
 
-    public Task<bool> CreateDealerAsync(Guid userId, Guid sessionId)
+    public async Task<bool> CreateDealerAsync(Guid userId, Guid sessionId)
     {
+        var alreadyHasDealer = await _repository.GetHasDealerAsync(sessionId);
+        if (alreadyHasDealer)
+        {
+            throw new BlackJackPlayerException(
+                BlackJackPlayerErrorCode.SessionAlreadyHasDealer,
+                $"The session {sessionId} already has a dealer player");
+        }
+
         var player = BlackJackPlayer.Create(userId, sessionId, "Dealer", 0);
         player.SetDealer(true);
-        return _repository.CreateAsync(player);
+        return await _repository.CreateAsync(player);
     }
 
     public async Task<PlayerDetailsDto> UpdateAsync(Guid id, PlayerDetailsDto dto)

@@ -20,7 +20,7 @@ public class BlackJackPlayersRepository : IBlackJackPlayersRepository
         var playerDetailsList = new List<PlayerDetailsDto>();
         var tableClient = _tableStorageClientFactory.CreateClient(TableName);
         var tableQuery = tableClient.QueryAsync<PlayerTableEntity>(
-            $"{nameof(PlayerTableEntity.PartitionKey)} eq '{PartitionKey}' and {nameof(PlayerTableEntity.SessionId)} eq '{sessionId}'");
+            $"{nameof(PlayerTableEntity.PartitionKey)} eq '{PartitionKey}' and {nameof(PlayerTableEntity.SessionId)} eq guid'{sessionId}'");
 
         await foreach (var page in tableQuery.AsPages())
         {
@@ -80,7 +80,7 @@ public class BlackJackPlayersRepository : IBlackJackPlayersRepository
     {
         var tableClient = _tableStorageClientFactory.CreateClient(TableName);
         var tableQuery = tableClient.QueryAsync<PlayerTableEntity>(
-            $"{nameof(PlayerTableEntity.PartitionKey)} eq '{PartitionKey}' and {nameof(PlayerTableEntity.SessionId)} eq '{sessionId}' and {nameof(PlayerTableEntity.IsDealer)} eq false");
+            $"{nameof(PlayerTableEntity.PartitionKey)} eq '{PartitionKey}' and {nameof(PlayerTableEntity.SessionId)} eq guid'{sessionId}' and {nameof(PlayerTableEntity.IsDealer)} eq false");
 
         var totalCount = 0;
         await foreach (var page in tableQuery.AsPages())
@@ -95,7 +95,7 @@ public class BlackJackPlayersRepository : IBlackJackPlayersRepository
     {
         var tableClient = _tableStorageClientFactory.CreateClient(TableName);
         var tableQuery = tableClient.QueryAsync<PlayerTableEntity>(
-            $"{nameof(PlayerTableEntity.PartitionKey)} eq '{PartitionKey}' and {nameof(PlayerTableEntity.SessionId)} eq '{sessionId}' and {nameof(PlayerTableEntity.IsDealer)} eq true");
+            $"{nameof(PlayerTableEntity.PartitionKey)} eq '{PartitionKey}' and {nameof(PlayerTableEntity.SessionId)} eq guid'{sessionId}' and {nameof(PlayerTableEntity.IsDealer)} eq true");
 
         var totalCount = 0;
         await foreach (var page in tableQuery.AsPages())
@@ -110,7 +110,7 @@ public class BlackJackPlayersRepository : IBlackJackPlayersRepository
     {
         var tableClient = _tableStorageClientFactory.CreateClient(TableName);
         var tableQuery = tableClient.QueryAsync<PlayerTableEntity>(
-            $"{nameof(PlayerTableEntity.PartitionKey)} eq '{PartitionKey}' and {nameof(PlayerTableEntity.SessionId)} eq '{sessionId}' and {nameof(PlayerTableEntity.UserId)} eq '{userId}'");
+            $"{nameof(PlayerTableEntity.PartitionKey)} eq '{PartitionKey}' and {nameof(PlayerTableEntity.SessionId)} eq guid'{sessionId}' and {nameof(PlayerTableEntity.UserId)} eq guid'{userId}'");
 
         var totalCount = 0;
         await foreach (var page in tableQuery.AsPages())
