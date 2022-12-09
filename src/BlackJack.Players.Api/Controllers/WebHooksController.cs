@@ -1,10 +1,11 @@
-﻿using Azure.Messaging.EventGrid;
+﻿using System.Text.Json;
+using Azure.Messaging.EventGrid;
 using Azure.Messaging.EventGrid.SystemEvents;
 using BlackJack.Events;
 using BlackJack.Events.EventData;
+using BlackJack.Events.Sessions.EventData;
 using BlackJack.Players.Core.Abstractions.Services;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace BlackJack.Players.Api.Controllers
 {
@@ -21,7 +22,7 @@ namespace BlackJack.Players.Api.Controllers
         {
             foreach (var eventGridEvent in ev)
             {
-                logger.LogInformation("Received webhook event {event}", JsonConvert.SerializeObject(eventGridEvent));
+                logger.LogInformation("Received webhook event {event}", JsonSerializer.Serialize(eventGridEvent));
                 if (eventGridEvent.EventType == SystemEventNames.EventGridSubscriptionValidation &&
                     eventGridEvent.Data != null)
                 {
@@ -38,7 +39,8 @@ namespace BlackJack.Players.Api.Controllers
                 if (eventGridEvent.EventType == BlackJackEventNames.SessionCreated &&
                     eventGridEvent.Data != null)
                 {
-                    var eventData = eventGridEvent.Data.ToObjectFromJson<TableCreatedEventData>();
+                    logger.LogInformation("Data {data}", eventGridEvent.Data.ToString());
+                    var eventData = eventGridEvent.Data.ToObjectFromJson<BlackJackSessionCreatedEventData>();
                     var dealerCreated = await blackJackPlayersService.CreateDealerAsync(eventData.UserId, eventData.SessionId);
                     logger.LogInformation("Session dealer created -> {success}", dealerCreated);
                     if (!dealerCreated)
