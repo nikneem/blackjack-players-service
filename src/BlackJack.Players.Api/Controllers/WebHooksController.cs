@@ -40,10 +40,7 @@ namespace BlackJack.Players.Api.Controllers
                     eventGridEvent.Data != null)
                 {
                     logger.LogInformation("Handling SessionCreated event");
-                    var dataString = eventGridEvent.Data.ToString();
-                    logger.LogInformation("Handling SessionCreated event with data {data}", dataString);
-                    var eventData = JsonSerializer.Deserialize<BlackJackSessionCreatedEventData>(dataString);
-                    logger.LogInformation("Deserialized data succesfully");
+                    var eventData = eventGridEvent.Data.ToObjectFromJson<BlackJackSessionCreatedEventData>();
                     var dealerCreated = await blackJackPlayersService.CreateDealerAsync(eventData.UserId, eventData.SessionId);
                     logger.LogInformation("Session dealer created -> {success}", dealerCreated);
                     if (!dealerCreated)
